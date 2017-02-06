@@ -19,19 +19,13 @@ files with `.html` extensions to the sitemap.
 
 ```javascript
 var generateSitemap = require('sitemap-static');
+var stream = process.stdout;
 
-generateSitemap({
+generateSitemap(stream, {
     findRoot: '.',
     ignoreFile: '',
     prefix: 'http://somesi.te/',
     pretty: false
-}, function(err, data) {
-    if(err) {
-        return console.error(err);
-    }
-
-    // xml sitemap
-    console.log(data);
 })
 ```
 

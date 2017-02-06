@@ -22,6 +22,7 @@ module.exports = function(stream, o) {
   //   findRoot - string
   //   ignoreFile - string
   //   prefix - string
+  //   additionalUrls - array
   // }
   o = o || {};
 
@@ -32,6 +33,7 @@ module.exports = function(stream, o) {
   var pretty = o.pretty || false;
   var ignore = [];
   var ignore_folders = [];
+  var additional_urls = o.additionalUrls || [];
 
   stream.write(header);
 
@@ -45,6 +47,20 @@ module.exports = function(stream, o) {
           }
       }
   }
+
+  var writeUrl = function (url) {
+    stream.write(
+        indent(1) + '<url>\n' +
+        indent(2) + '<loc>' + url + '</loc>\n' +
+        indent(1) + '</url>'
+      );
+  }
+
+  additional_urls.forEach(function (url) { 
+    writeUrl(url);
+  });
+
+
 
   finder.on('file', function(file /*, stat */) {
 
@@ -70,11 +86,7 @@ module.exports = function(stream, o) {
         }
       }
 
-      stream.write(
-        indent(1) + '<url>\n' +
-        indent(2) + '<loc>' + prefix + filepath + '</loc>\n' +
-        indent(1) + '</url>'
-      );
+      writeUrl(prefix + filepath);
 
   });
 
