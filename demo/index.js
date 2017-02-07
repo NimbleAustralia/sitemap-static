@@ -9,6 +9,6 @@ function main() {
     findRoot: './',
     ignoreFile: '',
     additionalRoutes: ['/route1/', 'route2/', 'route3'],
-    prefix: 'http://example.com',
+    prefix: 'http://example.com/',
     prettyWithSlash: true});
 }

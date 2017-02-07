@@ -96,7 +96,7 @@ module.exports = function(stream, o) {
             path.basename(filepath, '.html')
           );
         }
-		if (prettySlash) {
+		if (prettySlash && filepath.length > 0) {
 			filepath += '/';
 		}
       }
