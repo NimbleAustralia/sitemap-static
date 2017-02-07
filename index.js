@@ -59,7 +59,7 @@ module.exports = function(stream, o) {
   additional_routes.forEach(function (route) {
 	var url = prefix;
 	if (prefix.lastIndexOf('/') === prefix.length-1 && route.indexOf('/') === 0) {
-		url += route.substring(1, route.length-1);
+		url += route.substring(1, route.length);
 	} else {
 		url += route;
 	}
