@@ -8,7 +8,7 @@ function main() {
   generateSitemap(process.stdout, {
     findRoot: './',
     ignoreFile: '',
-    additionalUrls: ['https://app.example.com/'],
+    additionalRoutes: ['/route1/', 'route2/', 'route3'],
     prefix: 'http://example.com/',
     pretty: true});
 }

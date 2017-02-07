@@ -33,7 +33,7 @@ module.exports = function(stream, o) {
   var pretty = o.pretty || false;
   var ignore = [];
   var ignore_folders = [];
-  var additional_urls = o.additionalUrls || [];
+  var additional_routes = o.additionalRoutes || [];
 
   stream.write(header);
 
@@ -56,10 +56,15 @@ module.exports = function(stream, o) {
       );
   }
 
-  additional_urls.forEach(function (url) { 
+  additional_routes.forEach(function (route) {
+	var url = prefix;
+	if (prefix.lastIndexOf('/') === prefix.length-1 && route.indexOf('/') === 0) {
+		url += route.substring(1, route.length-1);
+	} else {
+		url += route;
+	}
     writeUrl(url);
   });
-
 
 
   finder.on('file', function(file /*, stat */) {
@@ -79,7 +84,7 @@ module.exports = function(stream, o) {
           var dir = path.dirname(filepath);
           filepath = dir === '.' ? '' : dir;
         } else {
-          filepath = path.join(
+          filepath = path.posix.join(
             path.dirname(filepath),
             path.basename(filepath, '.html')
           );
