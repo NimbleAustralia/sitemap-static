@@ -22,7 +22,9 @@ module.exports = function(stream, o) {
   //   findRoot - string
   //   ignoreFile - string
   //   prefix - string
-  //   additionalUrls - array
+  //   additionalRoutes - array
+  //   pretty - bool
+  //   prettyWithSlash - bool
   // }
   o = o || {};
 
@@ -31,6 +33,7 @@ module.exports = function(stream, o) {
   var prefix = o.prefix || '';
   var ignore_file = o.ignoreFile || '';
   var pretty = o.pretty || false;
+  var prettySlash = o.prettyWithSlash || false;
   var ignore = [];
   var ignore_folders = [];
   var additional_routes = o.additionalRoutes || [];
@@ -58,11 +61,15 @@ module.exports = function(stream, o) {
 
   additional_routes.forEach(function (route) {
 	var url = prefix;
+
 	if (prefix.lastIndexOf('/') === prefix.length-1 && route.indexOf('/') === 0) {
 		url += route.substring(1, route.length);
-	} else {
+	} else if (prefix.lastIndexOf('/') === prefix.length-1 || route.indexOf('/') === 0){
 		url += route;
+	} else {
+		url += '/' + route;
 	}
+
     writeUrl(url);
   });
 
@@ -79,7 +86,7 @@ module.exports = function(stream, o) {
 
       var filepath = path.relative(o.findRoot, file);
 
-      if (pretty) {
+      if (pretty || prettySlash) {
         if (path.basename(filepath) === 'index.html') {
           var dir = path.dirname(filepath);
           filepath = dir === '.' ? '' : dir;
@@ -89,6 +96,9 @@ module.exports = function(stream, o) {
             path.basename(filepath, '.html')
           );
         }
+		if (prettySlash) {
+			filepath += '/';
+		}
       }
 
       writeUrl(prefix + filepath);
