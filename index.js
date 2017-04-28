@@ -53,7 +53,7 @@ module.exports = function(stream, o) {
   }
 
   var writeUrl = function (url, lastmod) {
-    var str = '';
+    var str = '\n';
     str += indent(1) + '<url>\n';
     str += indent(2) + '<loc>' + url + '</loc>\n';
     if (lastmod) {
@@ -108,7 +108,7 @@ module.exports = function(stream, o) {
   });
 
   finder.on('end', function() {
-      stream.write('</urlset>\n');
+      stream.write('\n</urlset>\n');
       if (stream !== process.stdout) {
         stream.end();
       }

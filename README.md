@@ -1,6 +1,7 @@
 # sitemap-static
 
 [![build status](https://secure.travis-ci.org/tmcw/sitemap-static.png)](http://travis-ci.org/tmcw/sitemap-static)
+[![Greenkeeper badge](https://badges.greenkeeper.io/tmcw/sitemap-static.svg)](https://greenkeeper.io/)
 
 Make a sitemap for a static website based on files on disk
 
@@ -19,13 +20,22 @@ files with `.html` extensions to the sitemap.
 
 ```javascript
 var generateSitemap = require('sitemap-static');
-var stream = process.stdout;
+var fs = require('fs');
 
-generateSitemap(stream, {
+var writer = fs.createWriteStream('/path/to/your/sitemap.xml');
+
+generateSitemap(writer, {
     findRoot: '.',
     ignoreFile: '',
     prefix: 'http://somesi.te/',
     pretty: false
+}, function(err, data) {
+    if(err) {
+        return console.error(err);
+    }
+
+    // xml sitemap
+    console.log(data);
 })
 ```
 
