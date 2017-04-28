@@ -69,3 +69,27 @@ If you pass `--pretty` to the CLI (or `pretty: true` to the JS API), `sitemap-st
 Example Command:
 
 	sitemap-static --prefix=http://foo.bar/foo/ --pretty . > sitemap.xml
+
+### Pretty URL With Trailing Slash
+
+If you use `prettyWithSlash: true` instead of  `pretty: true`, a trailing slash will be added to pretty urls. For example:
+
+| Not pretty | Pretty |
+| --- | --- |
+| `http://www.example.com/index.html` | `http://www.example.com/` |
+| `http://www.example.com/about.html` | `http://www.example.com/about/` |
+| `http://www.example.com/author/index.html` | `http://www.example.com/author/` |
+| `http://www.example.com/author/main.html` | `http://www.example.com/author/main/` |
+
+
+Example Command:
+
+	sitemap-static --prefix=http://foo.bar/foo/ --prettyWithSlash . > sitemap.xml
+
+##Lastmod
+
+Last modified tags (that use the files modified time stats) by adding the `--lastmod` or `lastmod: true` options.
+
+Example Command:
+
+	sitemap-static --prefix=http://foo.bar/foo/ --lastmod . > sitemap.xml

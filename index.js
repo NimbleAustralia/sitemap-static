@@ -25,6 +25,7 @@ module.exports = function(stream, o) {
   //   additionalRoutes - array
   //   pretty - bool
   //   prettyWithSlash - bool
+  //   lastmod - bool
   // }
   o = o || {};
 
