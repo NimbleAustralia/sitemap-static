@@ -57,7 +57,7 @@ module.exports = function(stream, o) {
     str += indent(1) + '<url>\n';
     str += indent(2) + '<loc>' + url + '</loc>\n';
     if (lastmod) {
-      str += indent(2) + '<lastmod>' + lastmod + '</lastmod>';
+      str += indent(2) + '<lastmod>' + lastmod + '</lastmod>\n';
     }
     str += indent(1) + '</url>';
     stream.write(str);
