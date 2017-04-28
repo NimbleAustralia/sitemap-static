@@ -10,5 +10,6 @@ function main() {
     ignoreFile: '',
     additionalRoutes: ['/route1/', 'route2/', 'route3'],
     prefix: 'http://example.com/',
-    prettyWithSlash: true});
+    prettyWithSlash: true,
+	lastmod:true});
 }

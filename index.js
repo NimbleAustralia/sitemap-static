@@ -6,12 +6,12 @@ var header = '<?xml version="1.0" encoding="UTF-8"?>\n' +
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 function indent(level) {
-    var space = '    ';
-    var str = '';
-    for (var i = 0; i < level; i++) {
-      str += space;
-    }
-    return str;
+  var space = '    ';
+  var str = '';
+  for (var i = 0; i < level; i++) {
+    str += space;
+  }
+  return str;
 }
 
 module.exports = function(stream, o) {
@@ -37,51 +37,55 @@ module.exports = function(stream, o) {
   var ignore = [];
   var ignore_folders = [];
   var additional_routes = o.additionalRoutes || [];
+  var useLastmod = o.lastmod || false;
 
   stream.write(header);
 
   if (ignore_file) {
-      ignore = require(process.cwd() + '/' + ignore_file);
-      var len = ignore.length;
-      for (var i = 0; i < len; i++) {
-          var l = ignore[i].length;
-          if (ignore[i].substr(l - 5) !== '.html') {
-              ignore_folders.push(new RegExp('^' + ignore[i]));
-          }
+    ignore = require(process.cwd() + '/' + ignore_file);
+    var len = ignore.length;
+    for (var i = 0; i < len; i++) {
+      var l = ignore[i].length;
+      if (ignore[i].substr(l - 5) !== '.html') {
+        ignore_folders.push(new RegExp('^' + ignore[i]));
       }
+    }
   }
 
-  var writeUrl = function (url) {
-    stream.write(
-        indent(1) + '<url>\n' +
-        indent(2) + '<loc>' + url + '</loc>\n' +
-        indent(1) + '</url>'
-      );
+  var writeUrl = function (url, lastmod) {
+    var str = '';
+    str += indent(1) + '<url>\n';
+    str += indent(2) + '<loc>' + url + '</loc>\n';
+    if (lastmod) {
+      str += indent(2) + '<lastmod>' + lastmod + '</lastmod>';
+    }
+    str += indent(1) + '</url>';
+    stream.write(str);
   }
 
   additional_routes.forEach(function (route) {
-	var url = prefix;
+    var url = prefix;
 
-	if (prefix.lastIndexOf('/') === prefix.length-1 && route.indexOf('/') === 0) {
-		url += route.substring(1, route.length);
-	} else if (prefix.lastIndexOf('/') === prefix.length-1 || route.indexOf('/') === 0){
-		url += route;
-	} else {
-		url += '/' + route;
-	}
+    if (prefix.lastIndexOf('/') === prefix.length-1 && route.indexOf('/') === 0) {
+      url += route.substring(1, route.length);
+    } else if (prefix.lastIndexOf('/') === prefix.length-1 || route.indexOf('/') === 0){
+      url += route;
+    } else {
+      url += '/' + route;
+    }
 
     writeUrl(url);
   });
 
 
-  finder.on('file', function(file /*, stat */) {
+  finder.on('file', function(file, stat) {
 
       if (file.indexOf('.html') === -1 || ignore.indexOf(file) !== -1) {
         return;
       }
 
       for (var i = 0; i < ignore_folders.length; i++) {
-          if (file.match(ignore_folders[i])) return;
+        if (file.match(ignore_folders[i])) return;
       }
 
       var filepath = path.relative(o.findRoot, file);
@@ -96,13 +100,11 @@ module.exports = function(stream, o) {
             path.basename(filepath, '.html')
           );
         }
-		if (prettySlash && filepath.length > 0) {
-			filepath += '/';
-		}
+        if (prettySlash && filepath.length > 0) {
+          filepath += '/';
+        }
       }
-
-      writeUrl(prefix + filepath);
-
+      writeUrl(prefix + filepath, useLastmod ? stat.mtime.toISOString() : null);
   });
 
   finder.on('end', function() {
