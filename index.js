@@ -25,7 +25,6 @@ module.exports = function(stream, o) {
   //   additionalRoutes - array
   //   pretty - bool
   //   prettyWithSlash - bool
-  //   lastmod - bool
   // }
   o = o || {};
 
@@ -38,7 +37,6 @@ module.exports = function(stream, o) {
   var ignore = [];
   var ignore_folders = [];
   var additional_routes = o.additionalRoutes || [];
-  var useLastmod = o.lastmod || false;
 
   stream.write(header);
 
@@ -53,15 +51,11 @@ module.exports = function(stream, o) {
     }
   }
 
-  var writeUrl = function (url, lastmod) {
-    var str = '\n';
-    str += indent(1) + '<url>\n';
-    str += indent(2) + '<loc>' + url + '</loc>\n';
-    if (lastmod) {
-      str += indent(2) + '<lastmod>' + lastmod + '</lastmod>\n';
-    }
-    str += indent(1) + '</url>';
-    stream.write(str);
+  var writeUrl = function (url) {
+    stream.write('\n' +
+      indent(1) + '<url>\n' +
+      indent(2) + '<loc>' + url + '</loc>\n' +
+      indent(1) + '</url>');
   }
 
   additional_routes.forEach(function (route) {
@@ -105,7 +99,7 @@ module.exports = function(stream, o) {
           filepath += '/';
         }
       }
-      writeUrl(prefix + filepath, useLastmod ? stat.mtime.toISOString() : null);
+      writeUrl(prefix + filepath);
   });
 
   finder.on('end', function() {

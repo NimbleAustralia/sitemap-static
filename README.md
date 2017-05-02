@@ -86,10 +86,3 @@ Example Command:
 
 	sitemap-static --prefix=http://foo.bar/foo/ --prettyWithSlash . > sitemap.xml
 
-##Lastmod
-
-Last modified tags (that use the files modified time stats) by adding the `--lastmod` or `lastmod: true` options.
-
-Example Command:
-
-	sitemap-static --prefix=http://foo.bar/foo/ --lastmod . > sitemap.xml

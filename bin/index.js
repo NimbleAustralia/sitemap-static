@@ -24,6 +24,5 @@ generateSitemap(process.stdout, {
     ignoreFile: argv['ignore-file'],
     prefix: prefix,
     pretty: argv.pretty,
-    prettyWithSlash: argv.prettyWithSlash,
-    lastmod: argv.lastmod
+    prettyWithSlash: argv.prettyWithSlash
 });
