@@ -45,10 +45,8 @@ module.exports = function(stream, o) {
     var len = ignore.length;
     for (var i = 0; i < len; i++) {
       var l = ignore[i].length;
-      if (ignore[i].substr(l - 3) !== '.gz') {
-        if (ignore[i].substr(l - 5) !== '.html') {
-          ignore_folders.push(new RegExp('^' + ignore[i]));
-        }
+      if (ignore[i].substr(l - 5) !== '.html') {
+        ignore_folders.push(new RegExp('^' + ignore[i]));
       }
     }
   }
@@ -77,9 +75,11 @@ module.exports = function(stream, o) {
 
   finder.on('file', function(file, stat) {
 
-      if (file.indexOf('.html') === -1 || ignore.indexOf(file) !== -1) {
+      if (file.indexOf('.html') === -1 || ignore.indexOf(file) !== -1 || file.indexOf('.html.gz') !== -1) {
         return;
       }
+
+      console.log(file);
 
       for (var i = 0; i < ignore_folders.length; i++) {
         if (file.match(ignore_folders[i])) return;
