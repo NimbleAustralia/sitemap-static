@@ -79,8 +79,6 @@ module.exports = function(stream, o) {
         return;
       }
 
-      console.log(file);
-
       for (var i = 0; i < ignore_folders.length; i++) {
         if (file.match(ignore_folders[i])) return;
       }
