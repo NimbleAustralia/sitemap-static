@@ -45,8 +45,10 @@ module.exports = function(stream, o) {
     var len = ignore.length;
     for (var i = 0; i < len; i++) {
       var l = ignore[i].length;
-      if (ignore[i].substr(l - 5) !== '.html') {
-        ignore_folders.push(new RegExp('^' + ignore[i]));
+      if (ignore[i].substr(l - 3) !== '.gz') {
+        if (ignore[i].substr(l - 5) !== '.html') {
+          ignore_folders.push(new RegExp('^' + ignore[i]));
+        }
       }
     }
   }
